@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour
@@ -123,6 +124,9 @@ public class PlayerController : MonoBehaviour
         
         health = Mathf.Clamp(health, 0, 100);
         mana = Mathf.Clamp(mana, 0, 100);
+
+        if (transform.position.y < -15)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
 
