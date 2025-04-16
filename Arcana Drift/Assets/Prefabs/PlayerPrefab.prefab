@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 4439374121889167300}
   - component: {fileID: 8239581599721558658}
   - component: {fileID: 3377341522554160624}
+  - component: {fileID: 5741021120400446042}
   m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -267,7 +268,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &4439374121889167300
 MonoBehaviour:
@@ -281,6 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef5aa79712efd342853094ff10850a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   walkSpeed: 7
   sprintSpeed: 10
   driftSpeed: 30
@@ -288,7 +290,7 @@ MonoBehaviour:
   orientation: {fileID: 8024084901007145223}
   jumpForce: 6
   jumpCooldown: 0.25
-  airMultiplier: 0.6
+  airMultiplier: 0.3
   crouchSpeed: 4
   crouchYScale: 0.6
   jumpKey: 32
@@ -299,10 +301,14 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  isGrounded: 0
   maxSlopeAngle: 40
+  health: 100
   mana: 100
   driftingParticles: {fileID: 1303769440052747678, guid: 365af7f93a7dd65449921daa0eafd2e6, type: 3}
-  state: 0
+  healthBar: {fileID: 0}
+  manaBar: {fileID: 0}
+  playerObject: {fileID: 6330055403570658263}
 --- !u!114 &8239581599721558658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,7 +324,6 @@ MonoBehaviour:
   TeleportPlatform: {fileID: 4782007163731473742, guid: c60aedf91f54efa458f18430a9da38f1, type: 3}
   TeleportKey: 102
   teleportCooldown: 3
-  cooldownText: {fileID: 0}
   cooldownImage: {fileID: 0}
 --- !u!114 &3377341522554160624
 MonoBehaviour:
@@ -334,4 +339,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabRange: 3
   moveForce: 150
+  holdDistance: 2
+  verticalHoldDistance: 0.23
   holdPoint: {fileID: 8598391651875603434}
+  playerObject: {fileID: 6330055403570658263}
+--- !u!114 &5741021120400446042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867499670402538006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72a487da074dd0429823a763fd7cd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burstForce: 15
+  airDashForce: 20
+  burstRadius: 5
+  burstDamage: 20
+  cooldown: 2
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
+  explosionVFX: {fileID: 0}
+  explosionParticles: {fileID: 1612490496886066249, guid: acd630f00215d794daa8db525082e422, type: 3}

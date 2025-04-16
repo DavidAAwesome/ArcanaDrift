@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Check")] 
     public float playerHeight;
     public LayerMask whatIsGround;
-    private bool isGrounded;
+    public bool isGrounded;
 
     [Header("Slope Handling")] 
     public float maxSlopeAngle;
@@ -45,7 +45,9 @@ public class PlayerController : MonoBehaviour
     private bool exitingSlope;
 
     [Header("Stats")] 
+    public float maxHealth = 100f;
     public float health = 100f;
+    public float maxMana = 100f;
     public float mana = 100f;
     
     [Header("Particle Handling")]
@@ -63,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveDirection;
     private Rigidbody rb;
+
+    public Transform playerObject;
     
     
 
@@ -79,6 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        transform.position = SpawnManager.spawnPosition + Vector3.up * 2f;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -92,6 +97,8 @@ public class PlayerController : MonoBehaviour
     {
         //Grounded Check
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+
+        playerObject.rotation = orientation.rotation;
         
         MyInput();
         SpeedControl();
@@ -126,7 +133,9 @@ public class PlayerController : MonoBehaviour
         mana = Mathf.Clamp(mana, 0, 100);
 
         if (transform.position.y < -15)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            KillPlayer();
+        if(health <= 0)
+            KillPlayer();
 
     }
 
@@ -196,7 +205,13 @@ public class PlayerController : MonoBehaviour
         //Air
         else
         {
+            if(state == MovementState.drifting)
+                if (Input.GetKey(sprintKey))
+                    moveSpeed = sprintSpeed;
+                else
+                    moveSpeed = walkSpeed;
             state = MovementState.air;
+            spawnParticles = false;
             // Debug.Log("Airborne");
         }
     }
@@ -284,5 +299,46 @@ public class PlayerController : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
     }
+
+    public void TakeDamage(float damage)
+    { 
+        health -= damage;
+        Debug.Log("Health: " + health);
+    }
+
+    public void KillPlayer()
+    {
+        Respawn();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     
+    void Respawn()
+    {
+        if (Checkpoint.lastCheckpointPosition != Vector3.zero)
+        {
+            transform.position = SpawnManager.spawnPosition + Vector3.up * 1f; // Raise a bit to avoid clipping
+        }
+        else
+        {
+            Debug.Log("No checkpoint set. Respawn failed or using default position.");
+        }
+
+        health = maxHealth;
+        mana = maxMana;
+    }
+
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.CompareTag("Health"))
+    //     {
+    //         Destroy(other.gameObject);
+    //         health = maxHealth;
+    //     }
+    //     else if (other.gameObject.CompareTag("Mana"))
+    //     {
+    //         Destroy(other.gameObject);
+    //         mana = maxMana;
+    //     }
+    //         
+    // }
 }

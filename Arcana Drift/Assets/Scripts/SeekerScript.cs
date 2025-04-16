@@ -1,65 +1,141 @@
-// using UnityEngine;
-// using UnityEngine.AI;
-//
-// public class SeekerScript : MonoBehaviour
-// {
-//     public float detectionRange = 15f;
-//     public float attackRange = 2f;
-//     public float attackCooldown = 1.5f;
-//     public int damage = 10;
-//
-//     private Transform player;
-//     private NavMeshAgent agent;
-//     private float lastAttackTime;
-//
-//     void Start()
-//     {
-//         agent = GetComponent<NavMeshAgent>();
-//         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-//
-//         if (player == null)
-//         {
-//             Debug.LogError("Player not found! Make sure your player is tagged 'Player'.");
-//         }
-//     }
-//
-//     void Update()
-//     {
-//         if (player == null) return;
-//
-//         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-//
-//         if (distanceToPlayer <= detectionRange)
-//         {
-//             agent.SetDestination(player.position);
-//
-//             if (distanceToPlayer <= attackRange)
-//             {
-//                 agent.isStopped = true;
-//
-//                 if (Time.time - lastAttackTime >= attackCooldown)
-//                 {
-//                     Attack();
-//                     lastAttackTime = Time.time;
-//                 }
-//             }
-//             else
-//             {
-//                 agent.isStopped = false;
-//             }
-//         }
-//         else
-//         {
-//             agent.isStopped = true;
-//         }
-//     }
-//
-//     void Attack()
-//     {
-//         // Placeholder attack behavior
-//         Debug.Log($"{gameObject.name} attacks the player!");
-//
-//         // Here you could call a method on a player health script, like:
-//         // player.GetComponent<PlayerHealth>().TakeDamage(damage);
-//     }
-// }
+
+using System;
+using UnityEngine;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
+
+public class SeekerScript : MonoBehaviour
+{
+    public NavMeshAgent agent;
+
+    public Transform player;
+
+    public LayerMask whatIsGround, whatIsPlayer;
+
+    public float health;
+
+    //Patroling
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+
+    //Attacking
+    public float timeBetweenAttacks;
+    bool alreadyAttacked;
+    public GameObject projectile;
+    public float projectilePlaceDistance;
+
+    //States
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
+    {
+        player = GameObject.Find("PlayerPrefab").transform;
+        agent = GetComponent<NavMeshAgent>();
+    }
+    
+    private void Start()
+    {
+        agent.speed = 2f;
+        agent.acceleration = 4f;
+        agent.angularSpeed = 120f;
+    }
+
+
+    private void Update()
+    {
+        // Debug.Log("Current Speed: " + agent.velocity.magnitude);
+
+        //Check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+        if (!playerInSightRange && !playerInAttackRange) Patroling();
+        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+    }
+
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            agent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        //Walkpoint reached
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+            walkPointSet = true;
+    }
+
+    private void ChasePlayer()
+    {
+        agent.SetDestination(player.position);
+    }
+
+    private void AttackPlayer()
+    {
+        //Make sure enemy doesn't move
+        agent.isStopped = true;
+
+        transform.LookAt(player);
+
+        if (!alreadyAttacked)
+        {
+            ///Attack code here
+            Rigidbody rb = Instantiate(projectile, transform.position + transform.forward * projectilePlaceDistance, Quaternion.identity).GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            ///End of attack code
+
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
+        agent.isStopped = false; // Resume chasing after attack
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    }
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerController pc = other.gameObject.GetComponent<PlayerController>();
+            pc.TakeDamage(20f);
+        }
+    }
+}

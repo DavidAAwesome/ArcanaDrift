@@ -47,7 +47,14 @@ public class TeleportScript : MonoBehaviour
             else if (canTeleport && placedTeleporter != null)
             {
                 // Teleport to teleporter and start cooldown
-                transform.position = placedTeleporter.transform.position + Vector3.up * 1.5f; // Ensure player isn't stuck
+                Rigidbody rb = GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+                    transform.position = placedTeleporter.transform.position + Vector3.up * 3f;
+                    rb.isKinematic = false;
+                }
+                // transform.position = placedTeleporter.transform.position + Vector3.up * 1.5f; // Ensure player isn't stuck
                 Destroy(placedTeleporter);
                 teleporterPlaced = false;
 

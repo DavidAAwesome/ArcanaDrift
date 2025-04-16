@@ -39,7 +39,7 @@ public class PressureButton : MonoBehaviour
 
     bool IsPressingObject(Collider other)
     {
-        return other.CompareTag("Player") || other.CompareTag("Box");
+        return other.GetComponent<Rigidbody>() != null;//other.CompareTag("Player") || other.CompareTag("Box");
     }
 
     public void Pressed()
