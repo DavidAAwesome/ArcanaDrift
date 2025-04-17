@@ -111,7 +111,7 @@ public class SeekerScript : MonoBehaviour
         agent.isStopped = false; // Resume chasing after attack
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
 

@@ -8,6 +8,7 @@ public class FireburstAbility : MonoBehaviour
     public float burstRadius = 5f;
     public float burstDamage = 20f;
     public float cooldown = 2f;
+    public float pushForce = 5f;
     public LayerMask enemyMask;
     public GameObject explosionVFX;
     public GameObject explosionParticles;
@@ -30,6 +31,7 @@ public class FireburstAbility : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) && canBurst)
         {
+            pc.mana -= 20f;
             StartCoroutine(ActivateFireburst());
         }
     }
@@ -56,7 +58,8 @@ public class FireburstAbility : MonoBehaviour
         {
             if (enemy.CompareTag("Enemy"))
             {
-                // enemy.GetComponent<EnemyHealth>()?.TakeDamage(burstDamage);
+                enemy.GetComponent<SeekerScript>()?.TakeDamage(burstDamage);
+                enemy.GetComponent<Rigidbody>()?.AddForce(enemy.transform.position.normalized - transform.position.normalized * pushForce, ForceMode.Force);
             }
         }
 

@@ -303,7 +303,9 @@ MonoBehaviour:
     m_Bits: 1024
   isGrounded: 0
   maxSlopeAngle: 40
+  maxHealth: 100
   health: 100
+  maxMana: 100
   mana: 100
   driftingParticles: {fileID: 1303769440052747678, guid: 365af7f93a7dd65449921daa0eafd2e6, type: 3}
   healthBar: {fileID: 0}
@@ -357,11 +359,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burstForce: 15
   airDashForce: 20
-  burstRadius: 5
+  burstRadius: 50
   burstDamage: 20
   cooldown: 2
+  pushForce: 20
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
   explosionVFX: {fileID: 0}
-  explosionParticles: {fileID: 1612490496886066249, guid: acd630f00215d794daa8db525082e422, type: 3}
+  explosionParticles: {fileID: 2020296761020939056, guid: 94bc8050f9e61b147a47fa3332fbc2f0, type: 3}
