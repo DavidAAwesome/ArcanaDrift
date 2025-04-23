@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        transform.position = SpawnManager.spawnPosition + Vector3.up * 2f;
+        // transform.position = SpawnManager.spawnPosition + Vector3.up * 2f;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
 
     private void StateHandler()
     {
-        if (Input.GetKey(driftKey) && mana > 0f)
+        if (Input.GetKey(driftKey) && mana > 0f && GameManager.Instance.HasAbility(GameManager.Abilities.TurboBoost))
         {
             state = MovementState.drifting;
             moveSpeed = driftSpeed;
@@ -309,19 +309,21 @@ public class PlayerController : MonoBehaviour
     public void KillPlayer()
     {
         Respawn();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
     void Respawn()
     {
-        if (Checkpoint.lastCheckpointPosition != Vector3.zero)
-        {
-            transform.position = SpawnManager.spawnPosition + Vector3.up * 1f; // Raise a bit to avoid clipping
-        }
-        else
-        {
-            Debug.Log("No checkpoint set. Respawn failed or using default position.");
-        }
+        // if (Checkpoint.lastCheckpointPosition != Vector3.zero)
+        // {
+        //     transform.position = SpawnManager.spawnPosition + Vector3.up * 1f; // Raise a bit to avoid clipping
+        // }
+        // else
+        // {
+        //     Debug.Log("No checkpoint set. Respawn failed or using default position.");
+        // }
+        GameManager.Instance.Respawn();
+        
 
         health = maxHealth;
         mana = maxMana;

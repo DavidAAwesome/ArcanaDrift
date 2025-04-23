@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 83326034295648257}
   - component: {fileID: 3768021882445889855}
   - component: {fileID: 8087289774520213197}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4845,7 +4845,7 @@ GameObject:
   - component: {fileID: 8916930204998764778}
   - component: {fileID: 2374228543011274271}
   - component: {fileID: 857583475491907692}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Smokescreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}

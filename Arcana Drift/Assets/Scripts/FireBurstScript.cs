@@ -59,6 +59,7 @@ public class FireburstAbility : MonoBehaviour
             if (enemy.CompareTag("Enemy"))
             {
                 enemy.GetComponent<SeekerScript>()?.TakeDamage(burstDamage);
+                enemy.GetComponent<ChannelerScript>()?.TakeDamage(burstDamage);
                 enemy.GetComponent<Rigidbody>()?.AddForce(enemy.transform.position.normalized - transform.position.normalized * pushForce, ForceMode.Force);
             }
         }

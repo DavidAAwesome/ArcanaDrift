@@ -4,6 +4,7 @@ using TMPro;
 
 public class TeleportScript : MonoBehaviour
 {
+    public Rigidbody rb;
     public GameObject TeleportPlatform;
     public KeyCode TeleportKey = KeyCode.F;
     public float teleportCooldown = 3f;
@@ -12,9 +13,10 @@ public class TeleportScript : MonoBehaviour
     private bool canTeleport = true;
     private float cooldownTimer = 0f;
 
-    private GameObject placedTeleporter;
+    private static GameObject placedTeleporter;
     
     public Image cooldownImage;
+    public bool justTeleported = false;
 
     void Update()
     {
@@ -50,9 +52,13 @@ public class TeleportScript : MonoBehaviour
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    rb.isKinematic = true;
-                    transform.position = placedTeleporter.transform.position + Vector3.up * 3f;
-                    rb.isKinematic = false;
+                    // rb.isKinematic = true;
+                    // rb.linearVelocity = Vector3.zero;
+                    // rb.angularVelocity = Vector3.zero;
+                    rb.MovePosition(placedTeleporter.transform.position + Vector3.up * 3f);
+                    //transform.position = placedTeleporter.transform.position + Vector3.up * 3f;
+                    Debug.Log("Teleported to: " + transform.position);
+                    // rb.isKinematic = false;
                 }
                 // transform.position = placedTeleporter.transform.position + Vector3.up * 1.5f; // Ensure player isn't stuck
                 Destroy(placedTeleporter);
@@ -62,5 +68,16 @@ public class TeleportScript : MonoBehaviour
                 cooldownTimer = teleportCooldown;
             }
         }
+    }
+    
+    public void TeleportTo(Vector3 pos) {
+        rb.isKinematic = true;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = pos;
+        rb.isKinematic = false;
+    
+        justTeleported = true;
+        // teleportBufferTime = 0.1f;
     }
 }

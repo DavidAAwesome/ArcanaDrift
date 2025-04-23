@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 8239581599721558658}
   - component: {fileID: 3377341522554160624}
   - component: {fileID: 5741021120400446042}
+  - component: {fileID: 4473779345341309093}
   m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -323,6 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398d197e2e62b8b4699c59c778fab4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 8819762198697272205}
   TeleportPlatform: {fileID: 4782007163731473742, guid: c60aedf91f54efa458f18430a9da38f1, type: 3}
   TeleportKey: 102
   teleportCooldown: 3
@@ -368,3 +370,23 @@ MonoBehaviour:
     m_Bits: 256
   explosionVFX: {fileID: 0}
   explosionParticles: {fileID: 2020296761020939056, guid: 94bc8050f9e61b147a47fa3332fbc2f0, type: 3}
+--- !u!114 &4473779345341309093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867499670402538006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99b379026dbbba643bc981d939ec77e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  attackPoint: {fileID: 0}
+  objectToThrow: {fileID: 0}
+  totalThrows: 0
+  throwCooldown: 0
+  throwKey: 323
+  throwForce: 0
+  throwUpwardForce: 0

@@ -10,15 +10,17 @@ public class ExplosionScript : MonoBehaviour
         Debug.Log("Triggered");
         if (other.gameObject.CompareTag("Enemy"))
         {
-            sc = other.GetComponent<SeekerScript>();
-            sc.TakeDamage(100f);
-            sc.agent.updatePosition = false;
-            sc.agent.updateRotation = false;
-            sc.agent.isStopped = true;
-            rb = other.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            rb.AddForce(other.transform.position.normalized - transform.position.normalized * 20f, ForceMode.Force);
-            StartCoroutine(RecoverFromKnockback());
+            other.GetComponent<SeekerScript>()?.TakeDamage(100f);
+            other.GetComponent<ChannelerScript>()?.TakeDamage(100f);
+            // sc = other.GetComponent<SeekerScript>();
+            // sc.TakeDamage(100f);
+            // sc.agent.updatePosition = false;
+            // sc.agent.updateRotation = false;
+            // sc.agent.isStopped = true;
+            // rb = other.GetComponent<Rigidbody>();
+            // rb.isKinematic = false;
+            // rb.AddForce(other.transform.position.normalized - transform.position.normalized * 20f, ForceMode.Force);
+            // StartCoroutine(RecoverFromKnockback());
         }
     }
     

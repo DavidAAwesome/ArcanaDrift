@@ -22,12 +22,16 @@ public class TransitionerScript : MonoBehaviour
             case Scene.RuinedArchives:
                 SceneManager.LoadScene("RuinedArchives");
                 break;
+            case Scene.YouDidIt:
+                SceneManager.LoadScene("You Did It!");
+                break;
         }
     }
 
     public enum Scene
     {
         SampleScene,
-        RuinedArchives
+        RuinedArchives,
+        YouDidIt,
     }
 }

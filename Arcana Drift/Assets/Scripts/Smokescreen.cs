@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Smokescreen : MonoBehaviour
@@ -22,8 +23,12 @@ public class Smokescreen : MonoBehaviour
             playerInside = true;
             pc.TakeDamage(damagePerSecond);
             // tickTimer = tickRate; // Start with an immediate tick
-            Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        Destroy(gameObject, 2f);
     }
 
     // void OnTriggerExit(Collider other)

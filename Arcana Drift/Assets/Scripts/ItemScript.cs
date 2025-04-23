@@ -8,6 +8,7 @@ public class ItemScript : MonoBehaviour
     {
         Health,
         Mana,
+        TurboBoost
     }
     
     private void OnCollisionEnter(Collision other)
@@ -23,6 +24,9 @@ public class ItemScript : MonoBehaviour
                     break;
                 case itemType.Mana:
                     pc.mana = pc.maxMana;
+                    break;
+                case itemType.TurboBoost:
+                    GameManager.Instance.UnlockAbility(GameManager.Abilities.TurboBoost);
                     break;
             }
             Destroy(gameObject);

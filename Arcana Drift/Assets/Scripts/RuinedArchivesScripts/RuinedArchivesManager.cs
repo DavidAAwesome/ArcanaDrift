@@ -6,10 +6,12 @@ public class RuinedArchivesManager : MonoBehaviour
     public bool button2pressed;
     public bool button3pressed;
     public bool button4pressed;
+    public bool button5pressed;
 
     public GameObject door1;
     public GameObject door2;
     public GameObject door3;
+    public GameObject door4;
     
     void Update()
     {
@@ -27,6 +29,11 @@ public class RuinedArchivesManager : MonoBehaviour
             door3.SetActive(false);
         else
             door3.SetActive(true);
+        
+        if(button5pressed)
+            door4.SetActive(false);
+        else
+            door4.SetActive(true);
     }
     
     public void Button1Pressed()
@@ -67,6 +74,16 @@ public class RuinedArchivesManager : MonoBehaviour
     public void Button4Released()
     {
         button4pressed = false;
+    }
+    
+    public void Button5Pressed()
+    {
+        button5pressed = true;
+    }
+
+    public void Button5Released()
+    {
+        button5pressed = false;
     }
     
     
