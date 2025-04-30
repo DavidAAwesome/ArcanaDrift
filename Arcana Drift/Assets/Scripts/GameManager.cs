@@ -1,18 +1,23 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Instance")] 
     public static GameManager Instance;
-
-    // Ability tracking
+    
+    [Header("Ability Tracking")] 
     public HashSet<Abilities> unlockedAbilities = new HashSet<Abilities>();
-
-    // Checkpoint tracking
+    
+    [Header("Checkpoint tracking")] 
     public Vector3 lastCheckpointPosition;
     public bool hasCheckpoint = false;
 
+    [Header("Controls")] 
+    public float sensitivity = 500f;
+    
     public GameObject player;
     public GameObject turboBoostIcon;
     public GameObject specialBox;
@@ -42,7 +47,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         player = GameObject.Find("PlayerPrefab");
-        specialBoxStartPosition = specialBox.transform.position;
+        
+        if(specialBox != null)
+            specialBoxStartPosition = specialBox.transform.position;
 
         lastCheckpointPosition = player.transform.position;
     }

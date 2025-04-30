@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HomingBullet : MonoBehaviour
 {
+    public float damage = 10f;
     public float speed = 2f;                // Slow movement speed
     public float turnSpeed = 2f;            // How quickly it rotates toward the target
     public float lifetime = 10f;            // Auto-destroy after a while
@@ -40,7 +41,7 @@ public class HomingBullet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerController>().TakeDamage(10f);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
             Debug.Log("Player hit by homing bullet!");
 
             Destroy(gameObject); // Destroy bullet on hit

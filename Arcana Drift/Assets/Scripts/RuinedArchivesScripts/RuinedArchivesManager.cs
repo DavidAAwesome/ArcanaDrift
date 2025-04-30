@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RuinedArchivesManager : MonoBehaviour
 {
@@ -12,9 +13,14 @@ public class RuinedArchivesManager : MonoBehaviour
     public GameObject door2;
     public GameObject door3;
     public GameObject door4;
+
+    public GameObject boss;
     
     void Update()
     {
+        if (boss == null)
+            SceneManager.LoadScene("You Did It!");
+        
         if(button1pressed && button2pressed)
             door1.SetActive(false);
         else

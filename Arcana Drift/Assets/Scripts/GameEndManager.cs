@@ -10,6 +10,6 @@ public class GameEndManager : MonoBehaviour
     }
     public void restart()
     {
-        SceneManager.LoadScene("RuinedArchives");
+        SceneManager.LoadScene("MainMenu");
     }
 }

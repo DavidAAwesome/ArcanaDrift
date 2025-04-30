@@ -16,6 +16,7 @@ public class TeleportScript : MonoBehaviour
     private static GameObject placedTeleporter;
     
     public Image cooldownImage;
+    public GameObject placedImage;
     public bool justTeleported = false;
 
     void Update()
@@ -45,6 +46,7 @@ public class TeleportScript : MonoBehaviour
                 Vector3 spawnPosition = transform.position + Vector3.down * 1f; // Adjust 1f as needed
                 placedTeleporter = Instantiate(TeleportPlatform, spawnPosition, Quaternion.identity);
                 teleporterPlaced = true;
+                placedImage.SetActive(true);
             }
             else if (canTeleport && placedTeleporter != null)
             {
@@ -63,6 +65,7 @@ public class TeleportScript : MonoBehaviour
                 // transform.position = placedTeleporter.transform.position + Vector3.up * 1.5f; // Ensure player isn't stuck
                 Destroy(placedTeleporter);
                 teleporterPlaced = false;
+                placedImage.SetActive(false);
 
                 canTeleport = false;
                 cooldownTimer = teleportCooldown;

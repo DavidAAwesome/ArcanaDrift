@@ -4928,5 +4928,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c38bfb1a6d2b224195cc2760979849d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSecond: 10
+  damagePerSecond: 30
   tickRate: 0.5

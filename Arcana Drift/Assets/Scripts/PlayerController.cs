@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform playerObject;
     
-    
+    [HideInInspector] public bool overrideYVelocity = false;
 
     
 
@@ -245,36 +245,72 @@ public class PlayerController : MonoBehaviour
         rb.useGravity = !OnSlope();
     }
 
+    // private void SpeedControl()
+    // {
+    //     //Limit speed on a slope
+    //     if (OnSlope() && !exitingSlope)
+    //     {
+    //         if (rb.linearVelocity.magnitude > moveSpeed)
+    //             rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
+    //     }
+    //     //Limiting speed on ground or in air
+    //     else
+    //     {
+    //         Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    //         
+    //         // To Limit the velocity if needed
+    //         if (flatVel.magnitude > moveSpeed)
+    //         {
+    //             Vector3 limitedVel = flatVel.normalized * moveSpeed;
+    //             rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
+    //         }
+    //
+    //     }
+    // }
+    
     private void SpeedControl()
     {
-        //Limit speed on a slope
         if (OnSlope() && !exitingSlope)
         {
             if (rb.linearVelocity.magnitude > moveSpeed)
+            {
                 rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
+            }
         }
-        //Limiting speed on ground or in air
         else
         {
             Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            
-            // To Limit the velocity if needed
+
             if (flatVel.magnitude > moveSpeed)
             {
                 Vector3 limitedVel = flatVel.normalized * moveSpeed;
-                rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
-            }
 
+                float yVel = overrideYVelocity ? rb.linearVelocity.y : rb.linearVelocity.y;
+                rb.linearVelocity = new Vector3(limitedVel.x, yVel, limitedVel.z);
+            }
         }
     }
 
+
+    // private void Jump()
+    // {
+    //     exitingSlope = true;
+    //     
+    //     //Reset y velocity
+    //     rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    //     
+    //     rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    // }
+    
     private void Jump()
     {
         exitingSlope = true;
-        
-        //Reset y velocity
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        
+
+        if (!overrideYVelocity)
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        }
+
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
